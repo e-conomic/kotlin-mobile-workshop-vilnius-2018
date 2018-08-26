@@ -28,7 +28,7 @@ fun variableChecker() {
     }
 }
 
-fun betterVariableChecker() {
+fun unwrappedVariableChecker() {
     a?.also {
         println("Variable a has value $it\n")
     } ?: println("NULL!\n")
