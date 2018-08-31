@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.Mutable
-
 /**
  * Created by tudorgk on 29/08/2018.
  * Copyright (C) 2018 Visma e-conomic A/S
@@ -30,20 +28,6 @@ object Standard {
         print("Result: $result\n")
     }
 
-    fun testApply() {
-        val list: MutableList<String> = mutableListOf("A", "B", "C")
-
-        val result = list.apply {
-            println("Receiver: $this\n")
-
-            add("D")
-            13
-        }
-        print("Result: $result\n")
-        print("Original: $list\n")
-        print("Same object?: ${result === list}")
-    }
-
     fun testRun1() {
         val str: String = "string"
 
@@ -64,6 +48,21 @@ object Standard {
             13
         }
         print("Result: $result\n")
+    }
+
+    fun testApply() {
+        val list: MutableList<String> = mutableListOf("A", "B", "C")
+
+        val result = list.apply {
+            println("Receiver: $this\n")
+
+            add("D")
+
+            13
+        }
+        print("Result: $result\n")
+        print("Original: $list\n")
+        print("Same object?: ${result === list}")
     }
 
     fun testWith() {
