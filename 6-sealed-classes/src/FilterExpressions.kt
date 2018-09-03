@@ -19,15 +19,10 @@ enum class Operator(val op: String) {
     NotIn("\$nin:")
 }
 
-data class Predicate(val property: String, val operator: Operator, val value: String) :
-    FilterExpression()
-
+data class Predicate(val property: String, val operator: Operator, val value: String) : FilterExpression()
 data class Affine(val filterExpression: FilterExpression) : FilterExpression()
-data class And(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) :
-    FilterExpression()
-
-data class Or(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) :
-    FilterExpression()
+data class And(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) : FilterExpression()
+data class Or(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) : FilterExpression()
 
 fun FilterExpression.evaluate(): String = when (this) {
     is Predicate -> this.property + this.operator.op + this.value
@@ -36,39 +31,19 @@ fun FilterExpression.evaluate(): String = when (this) {
     is Or -> this.filterExpression1.evaluate() + Operator.Or.op + this.filterExpression2.evaluate()
 }
 
-infix fun FilterExpression?.and(expression: FilterExpression): FilterExpression {
-    if (this == null) {
-        return expression
-    }
+infix fun FilterExpression.and(expression: FilterExpression): FilterExpression =
+    And(this, expression)
 
-    return And(this, expression)
-}
+infix fun FilterExpression.or(expression: FilterExpression): FilterExpression =
+    Or(this, expression)
 
-infix fun FilterExpression?.or(expression: FilterExpression): FilterExpression {
-    if (this == null) {
-        return expression
-    }
+infix fun String.filterLike(rhs: String): Predicate =
+    Predicate(this, Operator.Like, rhs)
 
-    return Or(this, expression)
-}
+infix fun String.filterEquals(rhs: String): Predicate =
+    Predicate(this, Operator.Equals, rhs)
 
-fun FilterExpression?.toMap(): Map<String, String> {
-    if (this == null) {
-        return mapOf()
-    }
+infix fun String.filterGreaterThan(rhs: String): Predicate =
+    Predicate(this, Operator.GreaterThan, rhs)
 
-    return mapOf("filter" to this.evaluate())
-}
-
-// TODO: Add more functions when we need them
-infix fun String.filterLike(rhs: String): Predicate {
-    return Predicate(this, Operator.Like, rhs)
-}
-
-infix fun String.filterEquals(rhs: String): Predicate {
-    return Predicate(this, Operator.Equals, rhs)
-}
-
-infix fun String.filterGreaterThan(rhs: String): Predicate {
-    return Predicate(this, Operator.GreaterThan, rhs)
-}
+val filter = "name" filterEquals "Joe" and Affine("city" filterLike "*port" or ("age" filterGreaterThan "50"))
