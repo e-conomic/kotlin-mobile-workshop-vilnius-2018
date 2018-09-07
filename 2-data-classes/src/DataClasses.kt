@@ -6,19 +6,18 @@ open class Base : Serializable {
 }
 
 data class A(var name: String) : Base(), Serializable
-
 data class B(var aClass: A)
 
 
-val test1 = A("test1").apply { baseParam = "base1" }
-val test2 = test1.copy(name = "test2")
-val test3 = SerializationUtils.clone(test1)
+val defaultA = A("test1").apply { baseParam = "base1" }
+val defaultACopy = defaultA.copy()
+val defaultAClone = SerializationUtils.clone(defaultA)
 
 
-var test4 = B(test1)
-val test5 = test4.copy()
+var defaultB = B(defaultA)
+val defaultBCopy = defaultB.copy()
 
-fun print(instance: A) {
+fun printDataClass(instance: A) {
     println(instance.toString() + "\n")
     println(instance.baseParam.toString() + "\n")
 }
