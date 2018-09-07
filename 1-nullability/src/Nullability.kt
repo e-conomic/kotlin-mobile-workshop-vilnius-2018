@@ -1,3 +1,4 @@
+import java.util.*
 import kotlin.concurrent.thread
 
 var a: String? = null
@@ -10,16 +11,16 @@ fun changeForever() {
     }
 }
 
-@Synchronized
+//@Synchronized
 fun randomVariableSetter() {
-    a = if (listOf(true, false).shuffled().first()) {
+    a = if (Random().nextBoolean()) {
         "test"
     } else {
         null
     }
 }
 
-@Synchronized
+//@Synchronized
 fun variableChecker() {
     if (a != null) {
         println("Variable a has value $a\n")
@@ -34,6 +35,16 @@ fun unwrappedVariableChecker() {
     } ?: println("NULL!\n")
 }
 
+fun testOptional1() {
+    (1..100).forEach {
+        variableChecker()
+    }
+}
 
+fun testOptional2() {
+    (1..100).forEach {
+        unwrappedVariableChecker()
+    }
+}
 
 
