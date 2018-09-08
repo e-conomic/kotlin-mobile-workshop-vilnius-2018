@@ -14,17 +14,6 @@ object Lambdas {
             .forEach { println(it.toString() + " ") }
 
     fun demo2() {
-
-        val function: (Double, Double) -> Double =
-            { a, b -> Math.pow(a, b) }
-
-        (1..5)
-            .map { it.toDouble() }
-            .zipWithNext(function)
-            .forEach { println(it.toString() + " ") }
-    }
-
-    fun demo3() {
         val function: (String, MutableList<String>) -> Unit =
             { s, list -> list.add(s) }
 
@@ -37,6 +26,16 @@ object Lambdas {
         }
 
         println(list2)
+    }
+
+    fun demo3() {
+
+        val function: (Int, Int) -> Int =
+            { a, b -> a + b }
+
+        (1..5)
+            .zipWithNext(function)
+            .forEach { println(it.toString() + " ") }
     }
 
     fun demo4() {

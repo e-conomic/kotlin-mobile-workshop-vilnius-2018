@@ -1,15 +1,30 @@
+import kotlin.math.pow
+
 /**
  * Created by tudorgk on 29/08/2018.
  * Copyright (C) 2018 Visma e-conomic A/S
  */
 
 object Standard {
-    fun testLet() {
-        val str: String = "string"
 
-        val result = str.let {
+    fun testUnwrap() {
+        val strABC: String? = "abc"
+        strABC?.let { unwrappedStr: String ->
+            println("Unwrapped ABC: $unwrappedStr\n")
+        }
+
+        val strNull: String? = null
+        strNull?.let { unwrappedStr: String ->
+            println("Unwrapped Null: $unwrappedStr\n")
+        }
+    }
+
+    fun testLet() {
+        val str: String? = "abc"
+
+        val result = str?.let { unwrappedStr ->
             println("Receiver: $this\n")
-            println("Argument: $it\n")
+            println("Argument: $unwrappedStr\n")
 
             13
         }
@@ -17,9 +32,9 @@ object Standard {
     }
 
     fun testAlso() {
-        val str: String = "string"
+        val str: String? = "abc"
 
-        val result = str.also {
+        val result = str?.also {
             println("Receiver: $this\n")
             println("Argument: $it\n")
 
@@ -28,30 +43,9 @@ object Standard {
         print("Result: $result\n")
     }
 
-    fun testRun1() {
-        val str: String = "string"
-
-        val result = run {
-            println("Receiver: $this\n")
-
-            13
-        }
-        print("Result: $result\n")
-    }
-
-    fun testRun2() {
-        val str: String = "string"
-
-        val result = str.run {
-            println("Receiver: $this\n")
-
-            13
-        }
-        print("Result: $result\n")
-    }
-
+    // val defaultA = A("test1").apply { baseParam = "base1" }
     fun testApply() {
-        val list: MutableList<String> = mutableListOf("A", "B", "C")
+        val list = mutableListOf("A", "B", "C")
 
         val result = list.apply {
             println("Receiver: $this\n")
@@ -66,22 +60,23 @@ object Standard {
     }
 
     fun testWith() {
+        val list = mutableListOf("A", "B", "C")
 
-        data class DemoDataClass(var param1: Int = 1, var param2: String = "demo")
+        val result = with(list) {
 
-        val demo = DemoDataClass()
-
-        val result = with(demo) {
             println("Receiver: $this\n")
-            println("Param1: $param1\n")
-            println("Param2: $param2\n")
 
-            param1 = 2
-            param2 = "test"
+            add("D")
 
             13
         }
         print("Result: $result\n")
-        print("Original: $demo\n")
+        print("Original: $list\n")
+    }
+
+    fun testChaining() {
+        val number: Double? = null
+
+        number?.pow(2)?.let { print("$it\n") }?.let { print("$number\n") }
     }
 }
