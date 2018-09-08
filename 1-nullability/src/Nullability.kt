@@ -11,7 +11,7 @@ fun changeForever() {
     }
 }
 
-@Synchronized
+//@Synchronized
 fun randomVariableSetter() {
     a = if (Random().nextBoolean()) {
         "test"
@@ -20,7 +20,7 @@ fun randomVariableSetter() {
     }
 }
 
-@Synchronized
+//@Synchronized
 fun variableChecker() {
     if (a != null) {
         println("Variable a has value $a\n")
