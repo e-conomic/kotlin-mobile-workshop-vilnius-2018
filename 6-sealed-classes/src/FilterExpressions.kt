@@ -3,7 +3,7 @@
  * Copyright (C) 2018 Visma e-conomic A/S
  */
 
-sealed class FilterExpression
+sealed class FilterExpr
 
 enum class Operator(val op: String) {
     And("\$and:"),
@@ -19,22 +19,22 @@ enum class Operator(val op: String) {
     NotIn("\$nin:")
 }
 
-data class Predicate(val property: String, val operator: Operator, val value: String) : FilterExpression()
-data class Affine(val filterExpression: FilterExpression) : FilterExpression()
-data class And(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) : FilterExpression()
-data class Or(val filterExpression1: FilterExpression, val filterExpression2: FilterExpression) : FilterExpression()
+data class Predicate(val property: String, val operator: Operator, val value: String) : FilterExpr()
+data class Affine(val expression: FilterExpr) : FilterExpr()
+data class And(val lhs: FilterExpr, val rhs: FilterExpr) : FilterExpr()
+data class Or(val lhs: FilterExpr, val rhs: FilterExpr) : FilterExpr()
 
-fun FilterExpression.evaluate(): String = when (this) {
+fun FilterExpr.evaluate(): String = when (this) {
     is Predicate -> this.property + this.operator.op + this.value
-    is Affine -> "(" + this.filterExpression.evaluate() + ")"
-    is And -> this.filterExpression1.evaluate() + Operator.And.op + this.filterExpression2.evaluate()
-    is Or -> this.filterExpression1.evaluate() + Operator.Or.op + this.filterExpression2.evaluate()
+    is Affine -> "(" + this.expression.evaluate() + ")"
+    is And -> this.lhs.evaluate() + Operator.And.op + this.rhs.evaluate()
+    is Or -> this.lhs.evaluate() + Operator.Or.op + this.rhs.evaluate()
 }
 
-infix fun FilterExpression.and(expression: FilterExpression): FilterExpression =
+infix fun FilterExpr.and(expression: FilterExpr): FilterExpr =
     And(this, expression)
 
-infix fun FilterExpression.or(expression: FilterExpression): FilterExpression =
+infix fun FilterExpr.or(expression: FilterExpr): FilterExpr =
     Or(this, expression)
 
 infix fun String.filterLike(rhs: String): Predicate =

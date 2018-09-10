@@ -75,7 +75,7 @@ object Standard {
     }
 
     fun testChaining() {
-        val number: Double? = null
+        val number: Double? = 2.0
 
         number?.pow(2)?.let { print("$it\n") }?.let { print("$number\n") }
     }
